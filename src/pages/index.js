@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <Head>
         <title>AI Tweet Generator</title>
-        <meta name="description" content="AI Job Description Generator" />
+        <meta name="description" content="This is an AI powered Tweet Generator made by Shivam" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
