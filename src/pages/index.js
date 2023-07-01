@@ -11,7 +11,7 @@ export default function Home() {
         <title>AI Tweet Generator</title>
         <meta name="description" content="This is an AI powered Tweet Generator made by Shivam." />
         <meta property="og:title" content="AI Tweet Generator"/>
-        <meta property="og:image" content="../public/twitter-logo.png"/>
+        <meta property="og:image" content="/twitter-logo.png"/>
         <meta property="og:description" content="This is an AI powered Tweet Generator made by Shivam."/>
         <meta property="og:url" content="ai-tweet-generator-shivamagr1812.vercel.app"/>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
