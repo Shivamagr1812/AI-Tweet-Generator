@@ -1,49 +1,78 @@
 import React, { useState } from "react";
 
 export default function Dashboard() {
-  const [jobDescription, setJobDescription] = useState("");
+  const [tweet, setTweet] = useState("");
 
-  const [jobTitle, setJobTitle] = useState("");
-  const [industry, setIndustry] = useState("");
+  const [tweetTitle, setTweetTitle] = useState("");
+  const [domain, setDomain] = useState("");
   const [keyWords, setKeyWords] = useState("");
   const [tone, setTone] = useState("");
-  const [numWords, setNumWords] = useState("");
+  const [numChars, setNumChars] = useState("");
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsGenerating(true);
+    console.log("submitting")
+    const res = await fetch("/api/returnJobDescription", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        tweetTitle,
+        domain,
+        keyWords,
+        tone,
+        numChars,
+      }),
+    });
+    console.log("submitted")
+    setIsGenerating(false);
+    const data = await res.json();
+    // console.log(data)
+    setTweet(data.tweet.trim());
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(tweet);
+    setIsCopied(true);
+  };
 
   return (
     <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="grid gap-y-12 md:grid-cols-2 md:gap-x-12 ">
         <div className="">
-          <form>
+        <form onSubmit={(e) => handleSubmit(e)}>
             <div className="flex flex-col">
-              <label className="sr-only" htmlFor="jobTitle">
-                Job Title
+              <label className="sr-only" htmlFor="tweetTitle">
+                Tweet Title
               </label>
               <input
                 type="text"
                 className="block w-full rounded-md bg-white border border-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 placeholder-gray-500 my-2 text-gray-900"
-                name="jobTitle"
-                placeholder="Job Title"
-                id="jobTitle"
-                value={jobTitle}
-                onChange={(e) => setJobTitle(e.target.value)}
+                name="tweetTitle"
+                placeholder="Tweet Title"
+                id="tweetTitle"
+                value={tweetTitle}
+                onChange={(e) => setTweetTitle(e.target.value)}
                 required
               />
             </div>
             <div className="flex flex-col">
-              <label htmlFor="industry" className="sr-only">
-                Industry
+              <label htmlFor="domain" className="sr-only">
+                Domain
               </label>
               <input
-                value={industry}
-                onChange={(e) => setIndustry(e.target.value)}
+                value={domain}
+                onChange={(e) => setDomain(e.target.value)}
                 className="block w-full rounded-md bg-white border border-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 placeholder-gray-500 my-2 text-gray-900"
-                placeholder="Industry (Optional)"
+                placeholder="Domain (Optional)"
                 type="text"
-                name="industry"
-                id="industry"
+                name="domain"
+                id="domain"
               />
             </div>
             <div className="flex flex-col">
@@ -81,14 +110,14 @@ export default function Dashboard() {
             </div>
             <div className="flex flex-col">
               <label htmlFor="words" className="sr-only">
-                Words (Optional)
+                Characters (Optional)
               </label>
               <input
-                value={numWords}
-                onChange={(e) => setNumWords(e.target.value)}
+                value={numChars}
+                onChange={(e) => setNumChars(e.target.value)}
                 type="number"
                 className="block w-full rounded-md bg-white border border-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 placeholder-gray-500 my-2 text-gray-900"
-                placeholder="Number Of Words - Default 200 (Optional)"
+                placeholder="Number Of Characters - Default 200 (Optional)"
                 name="words"
                 id="words"
               />
@@ -97,14 +126,14 @@ export default function Dashboard() {
             <button
               className={`bg-blue-600 w-full hover:bg-blue-700 text-white font-bold mt-6 py-2 px-4 rounded
                 ${
-                  isGenerating || jobTitle === ""
+                  isGenerating || tweetTitle === ""
                     ? "cursor-not-allowed opacity-50"
                     : ""
                 }`}
               type="submit"
-              disabled={isGenerating || jobTitle === ""}
+              disabled={isGenerating || tweetTitle === ""}
             >
-              {isGenerating ? "Generating..." : "Generate Job Description"}
+              {isGenerating ? "Generating..." : "Generate Tweet"}
             </button>
           </form>
         </div>
@@ -115,25 +144,25 @@ export default function Dashboard() {
             </label>
             <textarea
               rows={
-                jobDescription === ""
+                tweet === ""
                   ? 7
-                  : jobDescription.split("\\n").length + 12
+                  : tweet.split("\\n").length + 12
               }
               name="output"
-              onChange={(e) => setJobDescription(e.target.value)}
-              value={jobDescription}
-              disabled={jobDescription === ""}
+              onChange={(e) => setTweet(e.target.value)}
+              value={tweet}
+              disabled={tweet === ""}
               id="output"
-              placeholder="AI Generated Job Description"
+              placeholder="AI Generated Tweet"
               className="block w-full rounded-md bg-white border border-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 placeholder-gray-500 my-2 text-gray-900"
             />
             <button
-              onClick={() => {}}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              type="submit"
-              disabled={jobDescription === ""}
+                onClick={handleCopy}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                type="submit"
+                disabled={tweet === ""}
             >
-              {isCopied ? "Copied" : "Copy to Clipboard"}
+                {isCopied ? "Copied" : "Copy to Clipboard"}
             </button>
           </div>
         </div>
