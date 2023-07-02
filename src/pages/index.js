@@ -20,7 +20,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={"bg-white min-h-screen "}>
+      <main className={"bg-white min-h-screen p-5"}>
         <div className="flex flex-col items-center justify-center px-4 py-2">
           <h1 className="text-4xl md:text-6xl font-bold">
             AI Tweet Generator
