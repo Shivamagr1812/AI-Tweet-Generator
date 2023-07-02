@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Dashboard() {
+export default function Threadboard() {
   const [tweet, setTweet] = useState("");
 
   const [tweetTitle, setTweetTitle] = useState("");

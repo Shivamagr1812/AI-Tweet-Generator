@@ -1,10 +1,13 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import Dashboard from "@/components/Dashboard";
+import Tweetboard from "@/components/tweetBoard";
+import Threadboard from "@/components/threadBoard";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const [thread, setThread] = useState(false);
   return (
     <>
       <Head>
@@ -29,12 +32,16 @@ export default function Home() {
             Create Amazing
             <span className="text-2xl font-bold text-blue-600">
               {" "}
-              Tweets{" "}
+              {thread?"Threads":"Tweets"}{" "}
             </span>
             in Seconds
           </p>
         </div>
-        <Dashboard />
+        {thread? <Threadboard/>: <Tweetboard/>}
+        <div className="flex flex-col font-medium text-lg justify-center">
+          <p className="text-center">Want a {thread?"tweet":"thread"} instead?</p>
+          <button className="bg-blue-600 text-center hover:bg-blue-700 text-white font-bold mx-auto py-2 px-4 w-48 rounded-xl" onClick={()=>{setThread(prevThread => !prevThread)}} >{thread?"Create Tweet":"Create Thread"}</button>
+          </div>
       </main>
     </>
   );
